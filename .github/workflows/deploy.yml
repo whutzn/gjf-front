@@ -30,6 +30,6 @@ jobs:
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
-          ACCESS_TOKEN: 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
+          ACCESS_TOKEN: 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
           BRANCH: gh-pages
           FOLDER: dist
