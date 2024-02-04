@@ -6,7 +6,7 @@
 
 <script lang="ts" setup>
 import { onMounted } from "vue"
-import { Cartesian3, createOsmBuildingsAsync, Ion, Math as CesiumMath, Terrain, Viewer } from "cesium"
+import { Cartesian3, createOsmBuildingsAsync, Ion, Math as CesiumMath, Terrain, Viewer, Cesium3DTileset } from "cesium"
 import "cesium/Build/Cesium/Widgets/widgets.css"
 
 onMounted(async () => {
@@ -16,12 +16,13 @@ onMounted(async () => {
     terrain: Terrain.fromWorldTerrain()
   })
   viewer.camera.flyTo({
-    destination: Cartesian3.fromDegrees(114.3, 30.58, 600),
+    destination: Cartesian3.fromDegrees(121.45, 31.22, 600),
     orientation: {
       heading: CesiumMath.toRadians(0.0),
       pitch: CesiumMath.toRadians(-15.0)
     }
   })
+  viewer.scene.primitives.add(await Cesium3DTileset.fromIonAssetId(2275207))
   const buildingTileset = await createOsmBuildingsAsync()
   viewer.scene.primitives.add(buildingTileset)
 })
