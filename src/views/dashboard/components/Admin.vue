@@ -35,6 +35,7 @@ onMounted(async () => {
   display: flex;
   justify-content: center;
   align-items: center;
+
   #sceneViewer {
     height: 100%;
     width: 100%;
