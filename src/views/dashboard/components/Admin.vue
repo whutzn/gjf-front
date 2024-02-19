@@ -13,8 +13,23 @@ onMounted(async () => {
   Ion.defaultAccessToken =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIyZWI3MjgzNy1mN2RiLTQ3ODUtYTYyMy00YWQ2ZGJiYjllMTAiLCJpZCI6MTQ4MTgyLCJpYXQiOjE2ODczMTIyMDl9.XpOkgvofy7JCkrtEkMyQ7wsEVJuYQSaATGEAtepxH4Q"
   const viewer = new Viewer("sceneViewer", {
+    animation: false, //动画小组件
+    baseLayerPicker: false, //底图选择组件
+    fullscreenButton: false, //全屏组件
+    vrButton: false,
+    geocoder: false,
+    homeButton: false,
+    infoBox: false,
+    scene3DOnly: true,
+    sceneModePicker: false,
+    selectionIndicator: false,
+    timeline: false,
+    navigationHelpButton: false,
+    navigationInstructionsInitiallyVisible: false,
     terrain: Terrain.fromWorldTerrain()
   })
+  viewer.cesiumWidget.creditContainer.style.display = "none"
+  if (process.env.NODE_ENV === "development") viewer.scene.debugShowFramesPerSecond = true
   viewer.camera.flyTo({
     destination: Cartesian3.fromDegrees(121.45, 31.22, 600),
     orientation: {
