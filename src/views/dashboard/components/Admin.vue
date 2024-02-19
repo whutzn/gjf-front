@@ -28,7 +28,7 @@ onMounted(async () => {
     navigationInstructionsInitiallyVisible: false,
     terrain: Terrain.fromWorldTerrain()
   })
-  viewer.cesiumWidget.creditContainer.style.display = "none"
+
   if (process.env.NODE_ENV === "development") viewer.scene.debugShowFramesPerSecond = true
   viewer.camera.flyTo({
     destination: Cartesian3.fromDegrees(121.45, 31.22, 600),
@@ -58,5 +58,12 @@ onMounted(async () => {
     padding: 0;
     overflow: hidden;
   }
+}
+</style>
+
+<style>
+.cesium-widget-credits {
+  /* 去除logo */
+  display: none !important;
 }
 </style>
