@@ -6,7 +6,15 @@
 
 <script lang="ts" setup>
 import { onMounted } from "vue"
-import { Cartesian3, createOsmBuildingsAsync, Ion, Math as CesiumMath, Terrain, Viewer, Cesium3DTileset } from "cesium"
+import {
+  Cartesian3,
+  createOsmBuildingsAsync,
+  Ion,
+  Math as CesiumMath,
+  Viewer,
+  Cesium3DTileset,
+  CesiumTerrainProvider
+} from "cesium"
 import "cesium/Build/Cesium/Widgets/widgets.css"
 
 onMounted(async () => {
@@ -25,9 +33,15 @@ onMounted(async () => {
     selectionIndicator: false,
     timeline: false,
     navigationHelpButton: false,
-    navigationInstructionsInitiallyVisible: false,
-    terrain: Terrain.fromWorldTerrain()
+    navigationInstructionsInitiallyVisible: false
+    // terrain: Terrain.fromWorldTerrain() //默认地形
   })
+
+  /**
+   * 加载火星地形
+   */
+  const MARS_TERRIAN = await CesiumTerrainProvider.fromUrl("http://data.mars3d.cn/terrain")
+  viewer.terrainProvider = MARS_TERRIAN
 
   if (process.env.NODE_ENV === "development") viewer.scene.debugShowFramesPerSecond = true
   viewer.camera.flyTo({
@@ -37,6 +51,9 @@ onMounted(async () => {
       pitch: CesiumMath.toRadians(-15.0)
     }
   })
+  /**
+   * 加载谷歌三维实景，中国区域基本不可用
+   **/
   viewer.scene.primitives.add(await Cesium3DTileset.fromIonAssetId(2275207))
   const buildingTileset = await createOsmBuildingsAsync()
   viewer.scene.primitives.add(buildingTileset)
