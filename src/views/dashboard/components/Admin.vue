@@ -6,15 +6,7 @@
 
 <script lang="ts" setup>
 import { onMounted } from "vue"
-import {
-  Cartesian3,
-  createOsmBuildingsAsync,
-  Ion,
-  Math as CesiumMath,
-  Viewer,
-  Cesium3DTileset,
-  CesiumTerrainProvider
-} from "cesium"
+import { Ion, Viewer, Cesium3DTileset } from "cesium"
 import "cesium/Build/Cesium/Widgets/widgets.css"
 
 onMounted(async () => {
@@ -40,23 +32,28 @@ onMounted(async () => {
   /**
    * 加载火星地形
    */
-  const MARS_TERRIAN = await CesiumTerrainProvider.fromUrl("http://data.mars3d.cn/terrain")
-  viewer.terrainProvider = MARS_TERRIAN
+  // const MARS_TERRIAN = await CesiumTerrainProvider.fromUrl("http://data.mars3d.cn/terrain")
+  // viewer.terrainProvider = MARS_TERRIAN
 
   if (process.env.NODE_ENV === "development") viewer.scene.debugShowFramesPerSecond = true
-  viewer.camera.flyTo({
-    destination: Cartesian3.fromDegrees(121.45, 31.22, 600),
-    orientation: {
-      heading: CesiumMath.toRadians(0.0),
-      pitch: CesiumMath.toRadians(-15.0)
-    }
-  })
+  // viewer.camera.flyTo({
+  //   destination: Cartesian3.fromDegrees(121.45, 31.22, 600),
+  //   orientation: {
+  //     heading: CesiumMath.toRadians(0.0),
+  //     pitch: CesiumMath.toRadians(-15.0)
+  //   }
+  // })
   /**
    * 加载谷歌三维实景，中国区域基本不可用
    **/
-  viewer.scene.primitives.add(await Cesium3DTileset.fromIonAssetId(2275207))
-  const buildingTileset = await createOsmBuildingsAsync()
-  viewer.scene.primitives.add(buildingTileset)
+  // viewer.scene.primitives.add(await Cesium3DTileset.fromIonAssetId(2275207))
+  // const buildingTileset = await createOsmBuildingsAsync()
+  // viewer.scene.primitives.add(buildingTileset)
+
+  const TANG_XIA = await Cesium3DTileset.fromUrl("http://192.168.3.132:9003/model/tHCxXN0Kk/tileset.json")
+  viewer.scene.primitives.add(TANG_XIA)
+  viewer.scene.globe.depthTestAgainstTerrain = true
+  viewer.zoomTo(TANG_XIA)
 })
 </script>
 
