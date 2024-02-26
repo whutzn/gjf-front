@@ -6,7 +6,7 @@
 
 <script lang="ts" setup>
 import { onMounted } from "vue"
-import { Ion, Viewer, Cesium3DTileset, CesiumTerrainProvider } from "cesium"
+import { Ion, Viewer, Cesium3DTileset, CesiumTerrainProvider, WebMapTileServiceImageryProvider } from "cesium"
 import "cesium/Build/Cesium/Widgets/widgets.css"
 import { setTilesHeight } from "@/utils/map/map3d"
 
@@ -26,8 +26,8 @@ onMounted(async () => {
     selectionIndicator: false,
     timeline: false,
     navigationHelpButton: false,
-    navigationInstructionsInitiallyVisible: false
-    // terrain: Terrain.fromWorldTerrain() //默认地形
+    navigationInstructionsInitiallyVisible: false,
+    baseLayer: false
   })
 
   /**
@@ -35,6 +35,26 @@ onMounted(async () => {
    */
   const MARS_TERRIAN = await CesiumTerrainProvider.fromUrl("http://data.mars3d.cn/terrain")
   viewer.terrainProvider = MARS_TERRIAN
+
+  const TDT_IMG = new WebMapTileServiceImageryProvider({
+    url: "http://t0.tianditu.gov.cn/img_w/wmts?tk=ebf64362215c081f8317203220f133eb",
+    layer: "img",
+    style: "default",
+    tileMatrixSetID: "w",
+    format: "tiles",
+    maximumLevel: 18
+  })
+  const TDT_CIA = new WebMapTileServiceImageryProvider({
+    url: "http://t0.tianditu.gov.cn/cia_w/wmts?tk=ebf64362215c081f8317203220f133eb",
+    layer: "cia",
+    style: "default",
+    tileMatrixSetID: "w",
+    format: "tiles",
+    maximumLevel: 18
+  })
+
+  viewer.imageryLayers.addImageryProvider(TDT_IMG)
+  viewer.imageryLayers.addImageryProvider(TDT_CIA)
 
   if (process.env.NODE_ENV === "development") viewer.scene.debugShowFramesPerSecond = true
   // viewer.camera.flyTo({
