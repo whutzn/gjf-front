@@ -6,8 +6,9 @@
 
 <script lang="ts" setup>
 import { onMounted } from "vue"
-import { Ion, Viewer, Cesium3DTileset } from "cesium"
+import { Ion, Viewer, Cesium3DTileset, CesiumTerrainProvider } from "cesium"
 import "cesium/Build/Cesium/Widgets/widgets.css"
+import { setTilesHeight } from "@/utils/map/map3d"
 
 onMounted(async () => {
   Ion.defaultAccessToken =
@@ -32,8 +33,8 @@ onMounted(async () => {
   /**
    * 加载火星地形
    */
-  // const MARS_TERRIAN = await CesiumTerrainProvider.fromUrl("http://data.mars3d.cn/terrain")
-  // viewer.terrainProvider = MARS_TERRIAN
+  const MARS_TERRIAN = await CesiumTerrainProvider.fromUrl("http://data.mars3d.cn/terrain")
+  viewer.terrainProvider = MARS_TERRIAN
 
   if (process.env.NODE_ENV === "development") viewer.scene.debugShowFramesPerSecond = true
   // viewer.camera.flyTo({
@@ -54,6 +55,7 @@ onMounted(async () => {
   viewer.scene.primitives.add(TANG_XIA)
   viewer.scene.globe.depthTestAgainstTerrain = true
   viewer.zoomTo(TANG_XIA)
+  setTilesHeight(TANG_XIA, 2.5)
 })
 </script>
 
