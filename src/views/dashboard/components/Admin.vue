@@ -27,8 +27,11 @@ onMounted(async () => {
     timeline: false,
     navigationHelpButton: false,
     navigationInstructionsInitiallyVisible: false,
-    baseLayer: false
+    baseLayer: false,
+    msaaSamples: 4
   })
+  // 水雾特效
+  viewer.scene.globe.showGroundAtmosphere = true
 
   /**
    * 加载火星地形
