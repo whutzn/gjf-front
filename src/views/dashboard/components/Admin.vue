@@ -40,7 +40,7 @@ onMounted(async () => {
   viewer.terrainProvider = MARS_TERRIAN
 
   const TDT_IMG = new WebMapTileServiceImageryProvider({
-    url: "http://t0.tianditu.gov.cn/img_w/wmts?tk=ebf64362215c081f8317203220f133eb",
+    url: "http://t0.tianditu.gov.cn/img_w/wmts?tk=63daddeb93bedd7502558f4170212453",
     layer: "img",
     style: "default",
     tileMatrixSetID: "w",
@@ -48,7 +48,7 @@ onMounted(async () => {
     maximumLevel: 18
   })
   const TDT_CIA = new WebMapTileServiceImageryProvider({
-    url: "http://t0.tianditu.gov.cn/cia_w/wmts?tk=ebf64362215c081f8317203220f133eb",
+    url: "http://t0.tianditu.gov.cn/cia_w/wmts?tk=63daddeb93bedd7502558f4170212453",
     layer: "cia",
     style: "default",
     tileMatrixSetID: "w",
