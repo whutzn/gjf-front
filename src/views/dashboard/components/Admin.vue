@@ -6,7 +6,14 @@
 
 <script lang="ts" setup>
 import { onMounted } from "vue"
-import { Ion, Viewer, Cesium3DTileset, CesiumTerrainProvider, WebMapTileServiceImageryProvider } from "cesium"
+import {
+  Ion,
+  Viewer,
+  Cesium3DTileset,
+  CesiumTerrainProvider,
+  WebMapTileServiceImageryProvider,
+  GeographicTilingScheme
+} from "cesium"
 import "cesium/Build/Cesium/Widgets/widgets.css"
 import { setTilesHeight } from "@/utils/map/map3d"
 
@@ -79,6 +86,43 @@ onMounted(async () => {
   viewer.scene.globe.depthTestAgainstTerrain = true
   viewer.zoomTo(TANG_XIA)
   setTilesHeight(TANG_XIA, 2.5)
+
+  const _matrixIds = [
+    "EPSG:4326:0",
+    "EPSG:4326:1",
+    "EPSG:4326:2",
+    "EPSG:4326:3",
+    "EPSG:4326:4",
+    "EPSG:4326:5",
+    "EPSG:4326:6",
+    "EPSG:4326:7",
+    "EPSG:4326:8",
+    "EPSG:4326:9",
+    "EPSG:4326:10",
+    "EPSG:4326:11",
+    "EPSG:4326:12",
+    "EPSG:4326:13",
+    "EPSG:4326:14",
+    "EPSG:4326:15",
+    "EPSG:4326:16",
+    "EPSG:4326:17",
+    "EPSG:4326:18",
+    "EPSG:4326:19",
+    "EPSG:4326:20",
+    "EPSG:4326:21"
+  ]
+
+  const ZJD_TILE = new WebMapTileServiceImageryProvider({
+    url: "http://192.168.0.92:8080/geoserver/zjd/gwc/service/wmts",
+    layer: "zjd:zjdzd_copy4",
+    style: "",
+    format: "image/png",
+    tileMatrixSetID: "EPSG:4326",
+    tileMatrixLabels: _matrixIds,
+    tilingScheme: new GeographicTilingScheme(),
+    maximumLevel: 20
+  })
+  viewer.imageryLayers.addImageryProvider(ZJD_TILE)
 })
 </script>
 
