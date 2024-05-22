@@ -1,75 +1,75 @@
 .btn-1 {
   width: 308px;
   left: 81px;
-  background-image: url("./images/1.png");
+  background-image: url("/images/1.png");
   .img {
-    background-image: url("./images/1-i.png");
+    background-image: url("/images/1-i.png");
   }
 }
 .btn-1:hover {
-  background-image: url("./images/1-h.png");
+  background-image: url("/images/1-h.png");
   .img {
-    background-image: url("./images/1-i-h.png");
+    background-image: url("/images/1-i-h.png");
   }
 }
 .btn-2 {
   width: 290px;
   left: 67px;
   top: 117px;
-  background-image: url("./images/2.png");
+  background-image: url("/images/2.png");
   .img {
-    background-image: url("./images/2-i.png");
+    background-image: url("/images/2-i.png");
   }
 }
 .btn-2:hover {
-  background-image: url("./images/2-h.png");
+  background-image: url("/images/2-h.png");
   .img {
-    background-image: url("./images/2-i-h.png");
+    background-image: url("/images/2-i-h.png");
   }
 }
 .btn-3 {
   width: 280px;
   left: 64px;
   top: 238px;
-  background-image: url("./images/3.png");
+  background-image: url("/images/3.png");
   .img {
-    background-image: url("./images/3-i.png");
+    background-image: url("/images/3-i.png");
   }
 }
 .btn-3:hover {
-  background-image: url("./images/3-h.png");
+  background-image: url("/images/3-h.png");
   .img {
-    background-image: url("./images/3-i-h.png");
+    background-image: url("/images/3-i-h.png");
   }
 }
 .btn-4 {
   width: 293px;
   left: 64px;
   top: 359px;
-  background-image: url("./images/4.png");
+  background-image: url("/images/4.png");
   .img {
-    background-image: url("./images/4-i.png");
+    background-image: url("/images/4-i.png");
   }
 }
 .btn-4:hover {
-  background-image: url("./images/4-h.png");
+  background-image: url("/images/4-h.png");
   .img {
-    background-image: url("./images/4-i-h.png");
+    background-image: url("/images/4-i-h.png");
   }
 }
 .btn-5 {
   width: 308px;
   left: 78px;
   top: 478px;
-  background-image: url("./images/5.png");
+  background-image: url("/images/5.png");
   .img {
-    background-image: url("./images/5-i.png");
+    background-image: url("/images/5-i.png");
   }
 }
 .btn-5:hover {
-  background-image: url("./images/5-h.png");
+  background-image: url("/images/5-h.png");
   .img {
-    background-image: url("./images/5-i-h.png");
+    background-image: url("/images/5-i-h.png");
   }
 }
 
@@ -84,18 +84,18 @@
     transition: all 500ms linear;
   }
   &.btn-1 {
-    background-image: url("./images/1-h.png");
+    background-image: url("/images/1-h.png");
   }
   &.btn-2 {
-    background-image: url("./images/2-h.png");
+    background-image: url("/images/2-h.png");
   }
   &.btn-3 {
-    background-image: url("./images/3-h.png");
+    background-image: url("/images/3-h.png");
   }
   &.btn-4 {
-    background-image: url("./images/4-h.png");
+    background-image: url("/images/4-h.png");
   }
   &.btn-5 {
-    background-image: url("./images/5-h.png");
+    background-image: url("/images/5-h.png");
   }
 }

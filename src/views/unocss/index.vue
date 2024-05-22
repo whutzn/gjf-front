@@ -11,7 +11,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import ButtonItem from "./ButtonItem.vue"
 
 export default {
@@ -41,9 +41,8 @@ export default {
     this.curSelected = this.currSelected
   },
   methods: {
-    click(val) {
+    click(val: number) {
       this.curSelected = val
-      this.$emit("child-event", val)
     }
   }
 }
@@ -61,7 +60,7 @@ export default {
   background-size: 100% 100%;
   background-position: center;
   background-color: #000000;
-  background-image: url("./images/leftMenu.png");
+  background-image: url("/images/leftMenu.png");
   left: 200px;
   top: 230px;
   position: absolute;
