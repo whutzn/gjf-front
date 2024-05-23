@@ -3,8 +3,13 @@
   /** 全局背景色 */
   --v3-body-bg-color: #f2f3f5;
   /** Header 区域 = NavigationBar 组件 + TagsView 组件 */
-  --v3-header-height: calc(var(--v3-navigationbar-height) + var(--v3-tagsview-height));
-  --v3-header-bg-color: #ffffff;
+  --v3-header-height: calc(
+    var(--v3-navigationbar-height) + var(--v3-tagsview-height) + var(--v3-header-border-bottom-width)
+  );
+  --v3-header-bg-color: var(--el-bg-color);
+  --v3-header-box-shadow: var(--el-box-shadow-lighter);
+  --v3-header-border-bottom-width: 1px;
+  --v3-header-border-bottom: var(--v3-header-border-bottom-width) solid var(--el-fill-color);
   /** NavigationBar 组件 */
   --v3-navigationbar-height: 50px;
   /** Sidebar 组件（左侧模式全部生效、顶部模式全部不生效、混合模式非颜色部分生效） */
