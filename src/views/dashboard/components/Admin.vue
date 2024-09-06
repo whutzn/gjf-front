@@ -12,7 +12,8 @@ import {
   Cesium3DTileset,
   CesiumTerrainProvider,
   WebMapTileServiceImageryProvider,
-  GeographicTilingScheme
+  GeographicTilingScheme,
+  ShadowMode
 } from "cesium"
 import "cesium/Build/Cesium/Widgets/widgets.css"
 import { setTilesHeight } from "@/utils/map/map3d"
@@ -81,11 +82,22 @@ onMounted(async () => {
   // const buildingTileset = await createOsmBuildingsAsync()
   // viewer.scene.primitives.add(buildingTileset)
 
-  const TANG_XIA = await Cesium3DTileset.fromUrl("http://192.168.3.132:9003/model/tHCxXN0Kk/tileset.json")
+  const TANG_XIA = await Cesium3DTileset.fromUrl("http://192.168.0.35:9003/model/tjOpRNmKP/tileset.json", {
+    shadows: ShadowMode.DISABLED,
+    dynamicScreenSpaceError: true,
+    dynamicScreenSpaceErrorDensity: 2.0e-4,
+    dynamicScreenSpaceErrorFactor: 24.0,
+    dynamicScreenSpaceErrorHeightFalloff: 0.25,
+    maximumScreenSpaceError: 7.5,
+    cacheBytes: 1073741824,
+    maximumCacheOverflowBytes: 2147483648,
+    skipLevelOfDetail: true,
+    preferLeaves: true
+  })
   viewer.scene.primitives.add(TANG_XIA)
   viewer.scene.globe.depthTestAgainstTerrain = true
   viewer.zoomTo(TANG_XIA)
-  setTilesHeight(TANG_XIA, 2.5)
+  setTilesHeight(TANG_XIA, 8)
 
   const _matrixIds = [
     "EPSG:4326:0",
@@ -113,8 +125,8 @@ onMounted(async () => {
   ]
 
   const ZJD_TILE = new WebMapTileServiceImageryProvider({
-    url: "http://192.168.0.92:8080/geoserver/zjd/gwc/service/wmts",
-    layer: "zjd:zjdzd_copy4",
+    url: "http://192.168.0.90:8080/geoserver/leqing/gwc/service/wmts",
+    layer: "leqing:tdlygh",
     style: "",
     format: "image/png",
     tileMatrixSetID: "EPSG:4326",
