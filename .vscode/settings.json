@@ -1,5 +1,6 @@
 {
-  "editor.tabSize": 2,
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "prettier.enable": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },

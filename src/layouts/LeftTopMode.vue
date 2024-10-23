@@ -7,7 +7,6 @@ import { AppMain, NavigationBar, Sidebar, TagsView, Logo } from "./components"
 
 const appStore = useAppStore()
 const settingsStore = useSettingsStore()
-
 const { showTagsView, showLogo } = storeToRefs(settingsStore)
 
 /** 定义计算属性 layoutClasses，用于控制布局的类名 */
@@ -64,7 +63,8 @@ $transition-time: 0.35s;
 
 .layout-header {
   background-color: var(--v3-header-bg-color);
-  box-shadow: var(--el-box-shadow-lighter);
+  box-shadow: var(--v3-header-box-shadow);
+  border-bottom: var(--v3-header-border-bottom);
 }
 
 .main-container {
@@ -79,6 +79,7 @@ $transition-time: 0.35s;
   left: 0;
   z-index: 1001;
   overflow: hidden;
+  border-right: var(--v3-sidebar-border-right);
   padding-top: var(--v3-navigationbar-height);
 }
 

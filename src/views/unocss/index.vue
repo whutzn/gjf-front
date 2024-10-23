@@ -1,68 +1,13 @@
 <template>
-  <div class="containerPublicLeft">
-    <ButtonItem
-      v-for="(item, index) in list"
-      :key="item.id"
-      :name="item.name"
-      :selected="curSelected == index + 1"
-      :index="index + 1"
-      @click="click(item.id)"
-    />
+  <div h-full uno-padding-20>
+    <div h-full text-center flex select-none all:transition-400>
+      <div ma>
+        <div text-5xl fw100 animate-bounce-alt animate-count-infinite animate-1s>UnoCSS</div>
+        <div op30 dark:op60 text-lg fw300 m1>该页面是一个 UnoCSS 的使用案例，其他页面依旧采用 Scss</div>
+        <div m2 flex justify-center text-lg op30 dark:op60 hover="op80" dark:hover="op80">
+          <a href="https://antfu.me/posts/reimagine-atomic-css-zh" target="_blank">推荐阅读：重新构想原子化 CSS</a>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
-
-<script lang="ts">
-import ButtonItem from "./ButtonItem.vue"
-
-export default {
-  name: "LeftPanel",
-  components: {
-    ButtonItem
-  },
-  data() {
-    return {
-      curSelected: 0,
-      list: [
-        { id: 1, name: "标题1" },
-        { id: 2, name: "标题2" },
-        { id: 3, name: "标题3" },
-        { id: 4, name: "标题4" },
-        { id: 5, name: "标题5" }
-      ]
-    }
-  },
-  props: {
-    currSelected: {
-      type: Number,
-      default: 0
-    }
-  },
-  mounted() {
-    this.curSelected = this.currSelected
-  },
-  methods: {
-    click(val: number) {
-      this.curSelected = val
-    }
-  }
-}
-</script>
-
-<style lang="scss" scoped>
-.containerPublicLeft {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  overflow: hidden;
-  width: 386px;
-  height: 586px;
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  background-position: center;
-  background-color: #000000;
-  background-image: url("/images/leftMenu.png");
-  left: 200px;
-  top: 230px;
-  position: absolute;
-}
-</style>

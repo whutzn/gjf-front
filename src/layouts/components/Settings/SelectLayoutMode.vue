@@ -1,21 +1,14 @@
 <script lang="ts" setup>
-import { computed } from "vue"
-import { storeToRefs } from "pinia"
-import { useSettingsStore } from "@/store/modules/settings"
+import { useLayoutMode } from "@/hooks/useLayoutMode"
+import { LayoutModeEnum } from "@/constants/app-key"
 
-const settingsStore = useSettingsStore()
-
-const { layoutMode } = storeToRefs(settingsStore)
-
-const isLeft = computed(() => layoutMode.value === "left")
-const isTop = computed(() => layoutMode.value === "top")
-const isLeftTop = computed(() => layoutMode.value === "left-top")
+const { isLeft, isTop, isLeftTop, setLayoutMode } = useLayoutMode()
 </script>
 
 <template>
   <div class="select-layout-mode">
     <el-tooltip content="左侧模式">
-      <el-container class="layout-mode left" :class="{ active: isLeft }" @click="layoutMode = 'left'">
+      <el-container class="layout-mode left" :class="{ active: isLeft }" @click="setLayoutMode(LayoutModeEnum.Left)">
         <el-aside />
         <el-container>
           <el-header />
@@ -24,13 +17,17 @@ const isLeftTop = computed(() => layoutMode.value === "left-top")
       </el-container>
     </el-tooltip>
     <el-tooltip content="顶部模式">
-      <el-container class="layout-mode top" :class="{ active: isTop }" @click="layoutMode = 'top'">
+      <el-container class="layout-mode top" :class="{ active: isTop }" @click="setLayoutMode(LayoutModeEnum.Top)">
         <el-header />
         <el-main />
       </el-container>
     </el-tooltip>
     <el-tooltip content="混合模式">
-      <el-container class="layout-mode left-top" :class="{ active: isLeftTop }" @click="layoutMode = 'left-top'">
+      <el-container
+        class="layout-mode left-top"
+        :class="{ active: isLeftTop }"
+        @click="setLayoutMode(LayoutModeEnum.LeftTop)"
+      >
         <el-header />
         <el-container>
           <el-aside />
@@ -53,7 +50,7 @@ const isLeftTop = computed(() => layoutMode.value === "left-top")
   overflow: hidden;
   cursor: pointer;
   border-radius: 6px;
-  border: 2px solid #00000000;
+  border: 2px solid transparent;
   &:hover {
     border: 2px solid var(--el-color-primary);
   }
@@ -73,13 +70,13 @@ const isLeftTop = computed(() => layoutMode.value === "left-top")
 
 .left {
   .el-header {
-    background-color: var(--el-border-color);
+    background-color: var(--el-fill-color-darker);
   }
   .el-aside {
     background-color: var(--el-color-primary);
   }
   .el-main {
-    background-color: var(--el-fill-color);
+    background-color: var(--el-fill-color-lighter);
   }
 }
 
@@ -88,19 +85,19 @@ const isLeftTop = computed(() => layoutMode.value === "left-top")
     background-color: var(--el-color-primary);
   }
   .el-main {
-    background-color: var(--el-fill-color);
+    background-color: var(--el-fill-color-lighter);
   }
 }
 
 .left-top {
   .el-header {
-    background-color: var(--el-border-color);
+    background-color: var(--el-fill-color-darker);
   }
   .el-aside {
     background-color: var(--el-color-primary);
   }
   .el-main {
-    background-color: var(--el-fill-color);
+    background-color: var(--el-fill-color-lighter);
   }
 }
 </style>

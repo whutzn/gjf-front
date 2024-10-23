@@ -3,7 +3,7 @@ const VITE_APP_TITLE = import.meta.env.VITE_APP_TITLE
 </script>
 
 <template>
-  <footer class="layout-footer">{{ VITE_APP_TITLE }}</footer>
+  <footer class="layout-footer">MIT © 2021-PRESENT {{ VITE_APP_TITLE }}</footer>
 </template>
 
 <style lang="scss" scoped>
@@ -13,6 +13,6 @@ const VITE_APP_TITLE = import.meta.env.VITE_APP_TITLE
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #c0c4cc;
+  color: var(--el-text-color-placeholder);
 }
 </style>
