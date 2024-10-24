@@ -44,11 +44,11 @@ onMounted(async () => {
   /**
    * 加载火星地形
    */
-  const MARS_TERRIAN = await CesiumTerrainProvider.fromUrl("http://data.mars3d.cn/terrain")
+  const MARS_TERRIAN = await CesiumTerrainProvider.fromUrl("https://data.mars3d.cn/terrain")
   viewer.terrainProvider = MARS_TERRIAN
 
   const TDT_IMG = new WebMapTileServiceImageryProvider({
-    url: "http://t0.tianditu.gov.cn/img_w/wmts?tk=63daddeb93bedd7502558f4170212453",
+    url: "https://t0.tianditu.gov.cn/img_w/wmts?tk=63daddeb93bedd7502558f4170212453",
     layer: "img",
     style: "default",
     tileMatrixSetID: "w",
@@ -56,7 +56,7 @@ onMounted(async () => {
     maximumLevel: 18
   })
   const TDT_CIA = new WebMapTileServiceImageryProvider({
-    url: "http://t0.tianditu.gov.cn/cia_w/wmts?tk=63daddeb93bedd7502558f4170212453",
+    url: "https://t0.tianditu.gov.cn/cia_w/wmts?tk=63daddeb93bedd7502558f4170212453",
     layer: "cia",
     style: "default",
     tileMatrixSetID: "w",
