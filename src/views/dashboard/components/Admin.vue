@@ -13,7 +13,8 @@ import {
   CesiumTerrainProvider,
   WebMapTileServiceImageryProvider,
   GeographicTilingScheme,
-  ShadowMode
+  ShadowMode,
+  GeoJsonDataSource
 } from "cesium"
 import "cesium/Build/Cesium/Widgets/widgets.css"
 import { setTilesHeight } from "@/utils/map/map3d"
@@ -124,7 +125,7 @@ onMounted(async () => {
     "EPSG:4326:21"
   ]
 
-  const ZJD_TILE = new WebMapTileServiceImageryProvider({
+  const DLTB_TILE = new WebMapTileServiceImageryProvider({
     url: "http://192.168.0.90:8080/geoserver/leqing/gwc/service/wmts",
     layer: "leqing:tdlygh",
     style: "",
@@ -134,7 +135,15 @@ onMounted(async () => {
     tilingScheme: new GeographicTilingScheme(),
     maximumLevel: 20
   })
-  viewer.imageryLayers.addImageryProvider(ZJD_TILE)
+  viewer.imageryLayers.addImageryProvider(DLTB_TILE)
+
+  const dth = GeoJsonDataSource.load(
+    "http://192.168.0.90:8080/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=leqing:zjdbl&outputFormat=application/json&srsName=EPSG:4326",
+    {
+      clampToGround: true
+    }
+  )
+  viewer.dataSources.add(dth)
 })
 </script>
 
