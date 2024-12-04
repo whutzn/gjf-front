@@ -172,7 +172,7 @@ onMounted(async () => {
       const entities = dataSource.entities.values
       for (let i = 0; i < entities.length; i++) {
         const entity = entities[i]
-        entity.polygon.material = createEntityCallback(entity)
+        if (entity.polygon != undefined) entity.polygon.material = createEntityCallback(entity)
       }
       // viewer.flyTo(dataSource)
     })
