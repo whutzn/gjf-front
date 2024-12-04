@@ -14,7 +14,14 @@ import {
   WebMapTileServiceImageryProvider,
   GeographicTilingScheme,
   ShadowMode,
-  GeoJsonDataSource
+  GeoJsonDataSource,
+  Color,
+  defined,
+  Entity,
+  ScreenSpaceEventType,
+  CallbackProperty,
+  ColorMaterialProperty,
+  ScreenSpaceEventHandler
 } from "cesium"
 import "cesium/Build/Cesium/Widgets/widgets.css"
 import { setTilesHeight } from "@/utils/map/map3d"
@@ -137,13 +144,52 @@ onMounted(async () => {
   })
   viewer.imageryLayers.addImageryProvider(DLTB_TILE)
 
+  let highlightedEntity = new Entity()
+  const highlightColor = Color.GREEN.withAlpha(0.6)
+  const normalColor = Color.YELLOW.withAlpha(0.6)
+
+  const createEntityCallback = (entity?: Entity) => {
+    const colorProperty = new CallbackProperty((time, result) => {
+      if (highlightedEntity === entity) {
+        return Color.clone(highlightColor, result)
+      }
+      return Color.clone(normalColor, result)
+    }, false)
+    return new ColorMaterialProperty(colorProperty)
+  }
+
   const dth = GeoJsonDataSource.load(
     "http://192.168.0.90:8080/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=leqing:zjdbl&outputFormat=application/json&srsName=EPSG:4326",
     {
-      clampToGround: true
+      clampToGround: true,
+      fill: Color.YELLOW.withAlpha(0.6)
     }
   )
-  viewer.dataSources.add(dth)
+
+  dth
+    .then((dataSource) => {
+      viewer.dataSources.add(dataSource)
+      const entities = dataSource.entities.values
+      for (let i = 0; i < entities.length; i++) {
+        const entity = entities[i]
+        entity.polygon.material = createEntityCallback(entity)
+      }
+      // viewer.flyTo(dataSource)
+    })
+    .catch((err) => {
+      console.log("load dth", err)
+    })
+
+  const scene = viewer.scene
+  const handler = new ScreenSpaceEventHandler(scene.canvas)
+  handler.setInputAction((movement: ScreenSpaceEventHandler.MotionEvent) => {
+    const pickedObject = scene.pick(movement.endPosition)
+    if (defined(pickedObject) && pickedObject.id instanceof Entity) {
+      highlightedEntity = pickedObject.id
+    } else {
+      highlightedEntity = new Entity()
+    }
+  }, ScreenSpaceEventType.MOUSE_MOVE)
 })
 </script>
 
