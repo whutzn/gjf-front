@@ -14,17 +14,21 @@ import {
   WebMapTileServiceImageryProvider,
   GeographicTilingScheme,
   ShadowMode,
-  GeoJsonDataSource,
   Color,
   defined,
-  Entity,
   ScreenSpaceEventType,
-  CallbackProperty,
-  ColorMaterialProperty,
-  ScreenSpaceEventHandler
+  ScreenSpaceEventHandler,
+  Cesium3DTileStyle,
+  ClassificationType,
+  Cesium3DTileFeature
 } from "cesium"
 import "cesium/Build/Cesium/Widgets/widgets.css"
 import { setTilesHeight } from "@/utils/map/map3d"
+
+interface Highlighted {
+  feature?: Cesium3DTileFeature | undefined // 确保属性为可选的
+  originalColor: Color // 确保 originalColor 是可用的属性
+}
 
 onMounted(async () => {
   Ion.defaultAccessToken =
@@ -107,6 +111,15 @@ onMounted(async () => {
   viewer.zoomTo(TANG_XIA)
   setTilesHeight(TANG_XIA, 8)
 
+  const DTH_TILE = await Cesium3DTileset.fromUrl("http://192.168.0.35:9003/model/eeXOegIl1/tileset.json", {
+    classificationType: ClassificationType.CESIUM_3D_TILE,
+    shadows: ShadowMode.DISABLED
+  })
+  DTH_TILE.style = new Cesium3DTileStyle({
+    color: "color('#E8F1F2', 0.01)"
+  })
+  viewer.scene.primitives.add(DTH_TILE)
+
   const _matrixIds = [
     "EPSG:4326:0",
     "EPSG:4326:1",
@@ -144,52 +157,82 @@ onMounted(async () => {
   })
   viewer.imageryLayers.addImageryProvider(DLTB_TILE)
 
-  let highlightedEntity = new Entity()
-  const highlightColor = Color.GREEN.withAlpha(0.6)
-  const normalColor = Color.YELLOW.withAlpha(0.6)
+  // const highlightedEntity = new Entity()
+  // const highlightColor = Color.GREEN.withAlpha(0.6)
+  // const normalColor = Color.YELLOW.withAlpha(0.6)
 
-  const createEntityCallback = (entity?: Entity) => {
-    const colorProperty = new CallbackProperty((time, result) => {
-      if (highlightedEntity === entity) {
-        return Color.clone(highlightColor, result)
-      }
-      return Color.clone(normalColor, result)
-    }, false)
-    return new ColorMaterialProperty(colorProperty)
-  }
+  // const createEntityCallback = (entity?: Entity) => {
+  //   const colorProperty = new CallbackProperty((time, result) => {
+  //     if (highlightedEntity === entity) {
+  //       return Color.clone(highlightColor, result)
+  //     }
+  //     return Color.clone(normalColor, result)
+  //   }, false)
+  //   return new ColorMaterialProperty(colorProperty)
+  // }
 
-  const dth = GeoJsonDataSource.load(
-    "http://192.168.0.90:8080/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=leqing:zjdbl&outputFormat=application/json&srsName=EPSG:4326",
-    {
-      clampToGround: true,
-      fill: Color.YELLOW.withAlpha(0.6)
-    }
-  )
+  // const dth = GeoJsonDataSource.load(
+  //   "http://192.168.0.90:8080/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=leqing:zjdbl&outputFormat=application/json&srsName=EPSG:4326",
+  //   {
+  //     clampToGround: true,
+  //     fill: Color.YELLOW.withAlpha(0.6)
+  //   }
+  // )
 
-  dth
-    .then((dataSource) => {
-      viewer.dataSources.add(dataSource)
-      const entities = dataSource.entities.values
-      for (let i = 0; i < entities.length; i++) {
-        const entity = entities[i]
-        if (entity.polygon != undefined) entity.polygon.material = createEntityCallback(entity)
-      }
-      // viewer.flyTo(dataSource)
-    })
-    .catch((err) => {
-      console.log("load dth", err)
-    })
+  // dth
+  //   .then((dataSource) => {
+  //     viewer.dataSources.add(dataSource)
+  //     const entities = dataSource.entities.values
+  //     for (let i = 0; i < entities.length; i++) {
+  //       const entity = entities[i]
+  //       if (entity.polygon != undefined) entity.polygon.material = createEntityCallback(entity)
+  //     }
+  //     // viewer.flyTo(dataSource)
+  //   })
+  //   .catch((err) => {
+  //     console.log("load dth", err)
+  //   })
 
   const scene = viewer.scene
   const handler = new ScreenSpaceEventHandler(scene.canvas)
-  handler.setInputAction((movement: ScreenSpaceEventHandler.MotionEvent) => {
-    const pickedObject = scene.pick(movement.endPosition)
-    if (defined(pickedObject) && pickedObject.id instanceof Entity) {
-      highlightedEntity = pickedObject.id
-    } else {
-      highlightedEntity = new Entity()
+  // 高亮元素
+  const hightLighted: Highlighted = {
+    feature: undefined,
+    originalColor: new Color()
+  }
+
+  handler.setInputAction((movement: ScreenSpaceEventHandler.PositionedEvent) => {
+    // const pickedObject = scene.pick(movement.endPosition)
+    // if (defined(pickedObject) && pickedObject.id instanceof Entity) {
+    //   highlightedEntity = pickedObject.id
+    // } else {
+    //   highlightedEntity = new Entity()
+    // }
+    // 清除之前的高亮元素
+    if (defined(hightLighted.feature)) {
+      // 这里可以推断出 hightLighted.feature 是 Feature 类型
+      // 确保 originalColor 是可用的
+      hightLighted.feature.color = hightLighted.originalColor
+      hightLighted.feature = undefined
     }
-  }, ScreenSpaceEventType.MOUSE_MOVE)
+    // 选择新要素
+    const pickedFeature = scene.pick(movement.position)
+    if (!defined(pickedFeature)) return
+
+    // 存储选中要素的信息
+    hightLighted.feature = pickedFeature
+    if (pickedFeature instanceof Cesium3DTileFeature) {
+      const propertyIds = pickedFeature.getPropertyIds()
+      const length = propertyIds.length
+      for (let i = 0; i < length; ++i) {
+        const propertyId = propertyIds[i]
+        console.log(`${propertyId}: ${pickedFeature.getProperty(propertyId)}`)
+      }
+    }
+    Color.clone(pickedFeature.color, hightLighted.originalColor)
+    // 高亮选中元素
+    pickedFeature.color = Color.YELLOW.withAlpha(0.3)
+  }, ScreenSpaceEventType.LEFT_CLICK)
 })
 </script>
 
